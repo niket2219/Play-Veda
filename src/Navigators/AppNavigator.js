@@ -26,6 +26,7 @@ const AppNavigator = () => {
       <Tab.Navigator
         initialRouteName="HOME"
         screenOptions={{
+          headerShown: false,
           tabBarStyle: styles.tabBar,
           tabBarLabelStyle: {
             position: "absolute",
