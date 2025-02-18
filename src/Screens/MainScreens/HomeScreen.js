@@ -1,7 +1,6 @@
 import React from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import ClubMembershipCard from "../../Components/Atoms/ClubMemberShipCard";
 import TopScreen from "../../Components/Molecules/TopScreen";
 
 const HomeScreen = () => {
@@ -11,9 +10,9 @@ const HomeScreen = () => {
         <View style={styles.topContainer}>
           <TopScreen />
         </View>
-        <View style={styles.membershipCard}>
+        {/* <View style={styles.membershipCard}>
           <ClubMembershipCard />
-        </View>
+        </View> */}
       </ScrollView>
     </SafeAreaView>
   );
