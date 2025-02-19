@@ -4,6 +4,7 @@ import { s, vs, ms } from "react-native-size-matters";
 const { width } = Dimensions.get("window");
 import Feather from "@expo/vector-icons/Feather";
 import Card from "./Card";
+import KidsPlayProgress from "../Atoms/KidsPlayProgress";
 
 const Header = ({ data, images }) => {
   const [scrollX, setScrollX] = useState(0);

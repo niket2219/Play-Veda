@@ -3,6 +3,9 @@ import { SafeAreaView, ScrollView, View, StyleSheet } from "react-native";
 import Session from "../Atoms/Session";
 import Images from "../../Utils/Images/Image";
 import Header from "./Header";
+import Card from "./Card";
+import Card3 from "../Atoms/Card3";
+import KidsPlayProgress from "../Atoms/KidsPlayProgress";
 
 const data = [
   {
@@ -47,10 +50,13 @@ const images = [
 const App = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView>
+      <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 65 }}>
         <View style={styles.mainScreen}>
           <Header data={data} images={images} />
           <Session images={images} />
+          <Card item={data[1]} />
+          <KidsPlayProgress />
+          <Card3 />
         </View>
       </ScrollView>
     </SafeAreaView>

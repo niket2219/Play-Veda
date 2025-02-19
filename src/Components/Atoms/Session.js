@@ -10,11 +10,15 @@ import {
 } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { ms, s } from "react-native-size-matters";
+import KidsPlayProgress from "./KidsPlayProgress";
 
 const PlayLilaCard = ({ images = [] }) => {
   const hasImages = images.length > 0;
+  const isKidsPlayProgressCard = false;
 
-  return (
+  return isKidsPlayProgressCard ? (
+    <KidsPlayProgress />
+  ) : (
     <View
       style={[
         styles.card,
@@ -26,7 +30,7 @@ const PlayLilaCard = ({ images = [] }) => {
           <Text style={styles.title}>Upcoming Play::Lila Sessions</Text>
           <Text style={styles.subtitle}>in your society</Text>
         </View>
-        <TouchableOpacity style={{ marginLeft: s(7) }}>
+        <TouchableOpacity>
           <AntDesign name="rightcircle" size={ms(28)} color="black" />
         </TouchableOpacity>
       </View>
@@ -52,7 +56,7 @@ const PlayLilaCard = ({ images = [] }) => {
 
 const styles = StyleSheet.create({
   card: {
-    maxWidth: "87%",
+    maxWidth: "90%",
     backgroundColor: "#fff",
     padding: 14,
     borderRadius: 20,
@@ -74,6 +78,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: s(30),
+    justifyContent: "space-between",
   },
   headings: {
     flexDirection: "column",

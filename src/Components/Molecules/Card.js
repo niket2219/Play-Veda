@@ -34,28 +34,6 @@ const Card = ({ item }) => {
   );
 };
 
-// const CardContent = ({ item }) => (
-//   <View style={styles.cardContent}>
-//     {item.isComingSoon && (
-//       <View style={styles.comingSoon}>
-//         <Text style={styles.comingSoonText}>Coming Soon</Text>
-//       </View>
-//     )}
-//     <Text style={styles.getStarted}>{item.title}</Text>
-//     <Text style={styles.description}>{item.description}</Text>
-//     <View style={styles.cardFooter}>
-//       <TouchableOpacity style={styles.button}>
-//         <Text style={styles.buttonText}>Learn More</Text>
-//       </TouchableOpacity>
-//       {item?.imgUrl && (
-//         <View style={styles.headerImgContainer}>
-//           <Image source={item.imgUrl} style={styles.image} />
-//         </View>
-//       )}
-//     </View>
-//   </View>
-// );
-
 const styles = StyleSheet.create({
   cardContainer: {
     width,
