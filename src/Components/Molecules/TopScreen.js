@@ -50,7 +50,10 @@ const images = [
 const App = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 65 }}>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 65 }}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.mainScreen}>
           <Header data={data} images={images} />
           <Session images={images} />
@@ -67,6 +70,7 @@ const styles = StyleSheet.create({
   mainScreen: {
     display: "flex",
     alignItems: "center",
+    flex: 1,
   },
 });
 

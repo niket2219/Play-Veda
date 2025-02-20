@@ -13,6 +13,7 @@ import Images from "../Utils/Images/Image";
 import HomeScreen from "../Screens/MainScreens/HomeScreen";
 import ActivitiesScreen from "../Screens/MainScreens/ActivitiesScreen";
 import VedaScreen from "../Screens/MainScreens/VedaScreen";
+import HomeNavigator from "./HomeNavigator";
 
 const Tab = createBottomTabNavigator();
 const screenWidth = Dimensions.get("window").width;
@@ -24,7 +25,7 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName="HOME"
+        initialRouteName="Home"
         screenOptions={{
           headerShown: false,
           tabBarStyle: styles.tabBar,
@@ -56,8 +57,8 @@ const AppNavigator = () => {
           }}
         />
         <Tab.Screen
-          name={"HOME"}
-          component={HomeScreen}
+          name={"Home"}
+          component={HomeNavigator}
           options={{
             tabBarIcon: () => (
               <Image

@@ -11,10 +11,12 @@ import {
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { ms, s } from "react-native-size-matters";
 import KidsPlayProgress from "./KidsPlayProgress";
+import { useRoute, useNavigation } from "@react-navigation/native";
 
 const PlayLilaCard = ({ images = [] }) => {
   const hasImages = images.length > 0;
   const isKidsPlayProgressCard = false;
+  const navigator = useNavigation();
 
   return isKidsPlayProgressCard ? (
     <KidsPlayProgress />
@@ -30,7 +32,9 @@ const PlayLilaCard = ({ images = [] }) => {
           <Text style={styles.title}>Upcoming Play::Lila Sessions</Text>
           <Text style={styles.subtitle}>in your society</Text>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigator.navigate("PlayLilaSession", {})}
+        >
           <AntDesign name="rightcircle" size={ms(28)} color="black" />
         </TouchableOpacity>
       </View>
@@ -56,7 +60,7 @@ const PlayLilaCard = ({ images = [] }) => {
 
 const styles = StyleSheet.create({
   card: {
-    maxWidth: "90%",
+    width: "90%",
     backgroundColor: "#fff",
     padding: 14,
     borderRadius: 20,
