@@ -4,13 +4,17 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  ScrollView,
+  Image,
 } from "react-native";
 import React, { useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { s, vs } from "react-native-size-matters";
+import { s, vs, ms } from "react-native-size-matters";
+import Images from "../../Utils/Images/Image";
+import SessionDetails from "../../Components/Molecules/SessionDetails";
 
 const sessions = [
   { id: "1", week: "week 1", date: "3", month: "Mar" },
@@ -25,6 +29,8 @@ const INFO_DATA = [
   { title: "BATCH SIZE", value: "10-12", subText: "kids" },
   { title: "DURATION", value: "90", subText: "mins" },
 ];
+
+const images = [Images.LilaSessionImage];
 
 const SessionHeader = () => {
   const navigator = useNavigation();
@@ -131,14 +137,88 @@ const ScheduleCard = () => {
   );
 };
 
+const WelcomePortion = () => {
+  return (
+    <View
+      style={{
+        display: "flex",
+      }}
+    >
+      <Text
+        style={{
+          fontSize: ms(28),
+          fontWeight: "600",
+          marginHorizontal: s(20),
+          flexWrap: "wrap",
+          marginVertical: vs(5),
+        }}
+      >
+        Welcome to the World of Play!
+      </Text>
+      <View
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          marginTop: 4,
+        }}
+      >
+        <FlatList
+          horizontal
+          data={images}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => {
+            return (
+              <View style={{ width: s(330), alignItems: "center" }}>
+                <Image
+                  source={item}
+                  style={{ height: vs(170), width: s(310) }}
+                  resizeMode="contain"
+                />
+              </View>
+            );
+          }}
+        />
+      </View>
+    </View>
+  );
+};
+
 const PlayLilaSession = () => {
-  const param = useRoute().params || {};
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View>
+      <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 80 }}>
         <SessionHeader />
         <ScheduleCard />
-      </View>
+        <WelcomePortion />
+        <SessionDetails />
+        <View
+          style={{
+            display: "flex",
+            paddingHorizontal: s(22),
+            paddingVertical: vs(10),
+            gap: 10,
+          }}
+        >
+          <Text style={{ fontSize: ms(20), fontWeight: 700, marginBottom: 10 }}>
+            Play Badge
+          </Text>
+          <Text style={{ color: "#FF126D", fontSize: ms(16) }}>
+            Explorer of Play 🏅
+          </Text>
+          <Text
+            style={{
+              fontSize: ms(14),
+              lineHeight: 24,
+              opacity: 0.6,
+              flexShrink: 1,
+            }}
+          >
+            All kids receive this sticker badge for enthusiastically engaging in
+            games, making new friends, and working as a team!
+          </Text>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -230,9 +310,11 @@ const sessionCardStyles = StyleSheet.create({
 
 const scheduleStyles = StyleSheet.create({
   card: {
-    padding: 16,
+    padding: ms(15),
     borderRadius: 10,
-    margin: 10,
+    marginHorizontal: 10,
+    marginTop: vs(9),
+    marginBottom: vs(5),
   },
   date: {
     fontSize: 18,
@@ -241,17 +323,18 @@ const scheduleStyles = StyleSheet.create({
   time: {
     fontSize: 14,
     color: "gray",
-    marginVertical: 5,
+    marginVertical: 7,
   },
   separator: {
     borderBottomWidth: 1,
     borderBottomColor: "#ddd",
-    marginVertical: 18,
+    marginTop: vs(8),
   },
   infoContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     paddingRight: s(10),
+    marginVertical: vs(14),
   },
   infoBlock: {
     flexDirection: "row",

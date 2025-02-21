@@ -7,6 +7,11 @@ const Images = {
   Session3: require("../../Assets/session3.png"),
   Session4: require("../../Assets/session4.png"),
   headerImg: require("../../Assets/headerImg.png"),
+  LilaSessionImage: require("../../Assets/LilaSessionImage.png"),
+  activity1: require("../../Assets/activity1.png"),
+  activity2: require("../../Assets/activity2.png"),
+  activity3: require("../../Assets/activity3.png"),
+  activity4: require("../../Assets/activity4.png"),
 };
 
 export default Images;
