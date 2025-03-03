@@ -16,13 +16,7 @@ const data = [
     isComingSoon: false,
     imgUrl: Images.headerImg,
   },
-  {
-    id: 2,
-    title: "Play::Veda",
-    description:
-      "Your personalized AI companion helps with parenting tips, play recommendations, and...",
-    isComingSoon: true,
-  },
+
   {
     id: 3,
     title: "Join",
@@ -37,6 +31,15 @@ const data = [
     id: 5,
     title: "Enjoy",
     description: "Experience our top-notch services and offerings",
+  },
+];
+const data1 = [
+  {
+    id: 2,
+    title: "Play::Veda",
+    description:
+      "Your personalized AI companion helps with parenting tips, play recommendations, and...",
+    isComingSoon: true,
   },
 ];
 
@@ -57,7 +60,7 @@ const App = () => {
         <View style={styles.mainScreen}>
           <Header data={data} images={images} />
           <Session images={images} />
-          <Card item={data[1]} />
+          <Card item={data1[0]} />
           <KidsPlayProgress />
           <Card3 />
         </View>
