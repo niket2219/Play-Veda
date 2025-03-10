@@ -7,7 +7,7 @@ import {
   ScrollView,
   Image,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
@@ -15,14 +15,7 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import { s, vs, ms } from "react-native-size-matters";
 import Images from "../../Utils/Images/Image";
 import SessionDetails from "../../Components/Molecules/SessionDetails";
-
-const sessions = [
-  { id: "1", week: "week 1", date: "3", month: "Mar" },
-  { id: "2", week: "week 1", date: "10", month: "Mar" },
-  { id: "3", week: "week 1", date: "17", month: "Mar" },
-  { id: "4", week: "week 1", date: "24", month: "Mar" },
-  { id: "5", week: "week 1", date: "31", month: "Mar" },
-];
+import axios from "axios";
 
 const INFO_DATA = [
   { title: "AGE GROUP", value: "5-10", subText: "years" },
@@ -32,7 +25,7 @@ const INFO_DATA = [
 
 const images = [Images.LilaSessionImage];
 
-const SessionHeader = () => {
+const SessionHeader = ({ sessions, currentActive, onSessionChange }) => {
   const navigator = useNavigation();
   return (
     <LinearGradient
@@ -60,14 +53,20 @@ const SessionHeader = () => {
         </View>
       </View>
       <View>
-        <SessionCard />
+        <SessionCard
+          sessions={sessions}
+          currentActive={currentActive}
+          onSessionChange={onSessionChange}
+        />
       </View>
     </LinearGradient>
   );
 };
 
-const SessionCard = () => {
-  const [selectedId, setSelectedId] = useState("1");
+const SessionCard = ({ sessions, currentActive, onSessionChange }) => {
+  useEffect(() => {
+    console.log(currentActive);
+  }, []);
   return (
     <View style={sessionCardStyles.container}>
       <FlatList
@@ -76,7 +75,7 @@ const SessionCard = () => {
         keyExtractor={(item) => item.id}
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => {
-          const isActive = item.id === selectedId;
+          const isActive = item.id === currentActive;
           return (
             <View>
               <TouchableOpacity
@@ -84,7 +83,7 @@ const SessionCard = () => {
                   sessionCardStyles.sessionBox,
                   isActive && sessionCardStyles.activeSession,
                 ]}
-                onPress={() => setSelectedId(item.id)}
+                onPress={() => onSessionChange(item.id)}
               >
                 <Text
                   style={[
@@ -93,11 +92,11 @@ const SessionCard = () => {
                     { marginTop: 6 },
                   ]}
                 >
-                  {item.week}
+                  {"week " + item.week}
                 </Text>
                 <View style={sessionCardStyles.dateMonth}>
                   <Text style={{ fontSize: 20, fontWeight: 600 }}>
-                    {item.date}
+                    {item.date.split("-")[2]}
                   </Text>
                   <Text style={{ fontSize: 14, fontWeight: 700 }}>
                     {item.month}
@@ -113,12 +112,15 @@ const SessionCard = () => {
   );
 };
 
-const ScheduleCard = () => {
+const ScheduleCard = ({ sessions, currentActive }) => {
+  const session = sessions.find((item) => item.id == currentActive);
   return (
     <View style={scheduleStyles.card}>
       <Text style={scheduleStyles.date}>Monday, 3rd Mar</Text>
       <Text style={scheduleStyles.time}>
-        5:30 - 7:00 PM :: Amphitheatre, Club House
+        {session.time}
+        {" :: "}
+        {session.location}
       </Text>
       <View style={scheduleStyles.separator} />
       <View style={scheduleStyles.infoContainer}>
@@ -137,7 +139,7 @@ const ScheduleCard = () => {
   );
 };
 
-const WelcomePortion = () => {
+const WelcomePortion = ({ sessions }) => {
   return (
     <View
       style={{
@@ -185,40 +187,69 @@ const WelcomePortion = () => {
 };
 
 const PlayLilaSession = () => {
+  const [sessions, setsessions] = useState([]);
+  const [currentActive, setcurrentActive] = useState(null);
+
+  const fetchSessions = async () => {
+    console.log("making api call");
+    try {
+      const response = await axios.get(
+        "https://play-veda-admin-server.onrender.com/api/sessions"
+      );
+      console.log("api calling done");
+      setsessions(response.data.sessions);
+      console.log(response.data.sessions[0]);
+      setcurrentActive(response.data.sessions[0].id);
+    } catch (error) {
+      console.log("error while requesting server : " + error);
+    }
+  };
+  useEffect(() => {
+    fetchSessions();
+  }, []);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 80 }}>
-        <SessionHeader />
-        <ScheduleCard />
-        <WelcomePortion />
-        <SessionDetails />
-        <View
-          style={{
-            display: "flex",
-            paddingHorizontal: s(22),
-            paddingVertical: vs(10),
-            gap: 10,
-          }}
-        >
-          <Text style={{ fontSize: ms(20), fontWeight: 700, marginBottom: 10 }}>
-            Play Badge
-          </Text>
-          <Text style={{ color: "#FF126D", fontSize: ms(16) }}>
-            Explorer of Play 🏅
-          </Text>
-          <Text
+      {currentActive !== null && (
+        <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 80 }}>
+          <SessionHeader
+            sessions={sessions}
+            currentActive={currentActive}
+            onSessionChange={setcurrentActive}
+          />
+          <ScheduleCard sessions={sessions} currentActive={currentActive} />
+          <WelcomePortion sessions={sessions} />
+          <SessionDetails sessions={sessions} currentActive={currentActive} />
+          <View
             style={{
-              fontSize: ms(14),
-              lineHeight: 24,
-              opacity: 0.6,
-              flexShrink: 1,
+              display: "flex",
+              paddingHorizontal: s(22),
+              paddingVertical: vs(10),
+              gap: 10,
             }}
           >
-            All kids receive this sticker badge for enthusiastically engaging in
-            games, making new friends, and working as a team!
-          </Text>
-        </View>
-      </ScrollView>
+            <Text
+              style={{ fontSize: ms(20), fontWeight: 700, marginBottom: 10 }}
+            >
+              Play Badge
+            </Text>
+            <Text style={{ color: "#FF126D", fontSize: ms(16) }}>
+              Explorer of Play 🏅
+            </Text>
+            <Text
+              style={{
+                fontSize: ms(14),
+                lineHeight: 24,
+                opacity: 0.6,
+                flexShrink: 1,
+              }}
+            >
+              All kids receive this sticker badge for enthusiastically engaging
+              in games, making new friends, and working as a team!
+            </Text>
+          </View>
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 };

@@ -14,71 +14,18 @@ import { s, vs, ms } from "react-native-size-matters";
 const MAX_VISIBLE_SESSION_ACTIVITIES = 4;
 const MAX_VISIBLE_BENEFITS = 3;
 
-const SessionDetails = () => {
+const SessionDetails = ({ sessions, currentActive }) => {
   const [showAllBenefits, setShowAllBenefits] = useState(false);
   const [showAllActivities, setShowAllActivities] = useState(false);
 
+  const session = sessions.find((item) => item.id == currentActive);
+  console.log(session);
+
   const sessionData = {
-    theme: "Let's Get Moving & Make New Friends",
-    benefitsDesc:
-      "This fun-filled session is designed to help kids feel comfortable, make new friends, and build confidence through interactive group play.",
-    benefits: [
-      "Social bonding & communication skills",
-      "Confidence in group settings",
-      "A sense of teamwork & self-expression",
-      "Improved physical coordination",
-      "Enhanced creativity and expression",
-    ],
-    sessionActivities: [
-      {
-        id: "5",
-        name: "shoonya.play",
-        description: "Calm and Reflect",
-        color: "#DFF4FE",
-        titleColor: "#30ADE7",
-        icon: Images.activity3,
-      },
-      {
-        id: "6",
-        name: "rasa.play",
-        description: "My Play Passport",
-        color: "#FFE7EF",
-        titleColor: "#ED5286",
-        icon: Images.activity4,
-      },
-      {
-        id: "1",
-        name: "urja.play",
-        description: "Find Your Buddy",
-        color: "#FFEFE2",
-        titleColor: "#FE8A2C",
-        icon: Images.activity1,
-      },
-      {
-        id: "2",
-        name: "moolya.play",
-        description: "The Magic of Teamwork",
-        color: "#EAE8FF",
-        titleColor: "#8077E7",
-        icon: Images.activity2,
-      },
-      {
-        id: "3",
-        name: "shoonya.play",
-        description: "Calm and Reflect",
-        color: "#DFF4FE",
-        titleColor: "#30ADE7",
-        icon: Images.activity3,
-      },
-      {
-        id: "4",
-        name: "rasa.play",
-        description: "My Play Passport",
-        color: "#FFE7EF",
-        titleColor: "#ED5286",
-        icon: Images.activity4,
-      },
-    ],
+    theme: session.theme,
+    benefitsDesc: session.benefitsDesc,
+    benefits: session.benefits,
+    sessionActivities: session.sessionActivities,
   };
 
   const visibleBenefits = showAllBenefits
@@ -135,18 +82,20 @@ const SessionDetails = () => {
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <View
-                style={[styles.activityCard, { backgroundColor: item.color }]}
+                style={[
+                  styles.activityCard,
+                  { backgroundColor: item.backgroundColor },
+                ]}
               >
                 {item?.icon && (
                   <Image
-                    source={item.icon}
+                    source={{ uri: item.icon }}
+                    alt="no image"
                     style={{ width: ms(34), height: ms(34) }}
                     resizeMode="contain"
                   />
                 )}
-                <Text
-                  style={[styles.activityTitle, { color: item.titleColor }]}
-                >
+                <Text style={[styles.activityTitle, { color: item.color }]}>
                   {item.name}
                 </Text>
                 <Text style={styles.activityDesc}>{item.description}</Text>
