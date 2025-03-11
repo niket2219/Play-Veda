@@ -1,13 +1,16 @@
-import DoubleWala from "./Components/AuthStack/DoubleWala";
-import Login from "./Components/AuthStack/Login";
-import MoreDetails from "./Components/AuthStack/MoreDetails";
 import AppNavigator from "./Navigators/AppNavigator";
+import AuthNavigator from "./Navigators/AuthNavigator";
+import { AuthProvider, useAuth } from "./AuthContext";
 
 export default function App() {
   return (
-    <AppNavigator />
-    // <DoubleWala />
-    // <Login />
-    // <MoreDetails />
+    <AuthProvider>
+      <Main />
+    </AuthProvider>
   );
+}
+
+function Main() {
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? <AppNavigator /> : <AuthNavigator />;
 }

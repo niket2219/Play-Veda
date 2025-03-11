@@ -6,12 +6,16 @@ import {
   ScrollView,
   Dimensions,
   StyleSheet,
+  Image,
 } from "react-native";
 import { s, vs, ms } from "react-native-size-matters";
+import { useNavigation } from "@react-navigation/native";
+import Images from "../../Utils/Images/Image";
 
 const { width } = Dimensions.get("window");
 
-const OnboardingScreen = ({ navigation }) => {
+const OnboardingScreen = () => {
+  const navigation = useNavigation();
   const scrollRef = useRef(null);
   const [index, setIndex] = useState(0);
 
@@ -48,26 +52,6 @@ const OnboardingScreen = ({ navigation }) => {
         onScroll={handleScroll}
         scrollEventThrottle={16}
       >
-        {/* {screens.map((screen, i) => (
-          <View key={i} style={[styles.slide, { width }]}>
-            <View style={styles.textContainer}>
-              <View style={styles.textContainer1}>
-                <View>
-                  <Text style={styles.text1}>{"Courses" + "  "}</Text>
-                </View>
-                <View>
-                  <Text style={styles.text2}>to learn</Text>
-                </View>
-              </View>
-              <View>
-                <Text style={styles.text2}>life skills</Text>
-              </View>
-            </View>
-            <View style={styles.descriptionContainer}>
-              <Text style={styles.description}>{screen.description}</Text>
-            </View>
-          </View>
-        ))} */}
         <Screen1 />
         <Screen2 />
       </ScrollView>
@@ -88,7 +72,12 @@ const OnboardingScreen = ({ navigation }) => {
           <Text style={styles.buttonText}>NEXT</Text>
         </TouchableOpacity>
       ) : (
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            navigation.push("Login");
+          }}
+        >
           <Text style={styles.buttonText}>CONTINUE</Text>
         </TouchableOpacity>
       )}
@@ -101,6 +90,11 @@ export default OnboardingScreen;
 const Screen1 = () => {
   return (
     <View style={[styles.slide, { width }]}>
+      <Image
+        source={Images.doubleSecond}
+        style={styles.Image}
+        resizeMode="contain"
+      />
       <View style={styles.textContainer}>
         <View style={styles.textContainer1}>
           <View>
@@ -127,6 +121,11 @@ const Screen1 = () => {
 const Screen2 = () => {
   return (
     <View style={[styles.slide, { width }]}>
+      <Image
+        source={Images.doubleFirst}
+        style={styles.Image}
+        resizeMode="contain"
+      />
       <View style={styles.textContainer}>
         <View style={styles.textContainer1}>
           <View>
@@ -234,5 +233,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
+  },
+  Image: {
+    marginBottom: vs(60),
   },
 });

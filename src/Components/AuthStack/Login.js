@@ -5,70 +5,85 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Image,
 } from "react-native";
 import CountryPicker from "react-native-country-picker-modal";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { useNavigation } from "@react-navigation/native";
+import Images from "../../Utils/Images/Image";
+import { s, vs, ms } from "react-native-size-matters";
 
 const App = () => {
+  const navigator = useNavigation();
   const [country, setCountry] = useState({ cca2: "IN", name: "India" });
   const [email, setEmail] = useState("");
   const [showPicker, setShowPicker] = useState(false);
 
   return (
-    <View style={styles.bottomContainer}>
-      <View style={{ display: "flex", flexDirection: "row" }}>
-        <Text style={styles.title}>{"Let's Get" + " "}</Text>
-        <Text style={[styles.title, { color: "rgb(197, 1, 142)" }]}>
-          Started
-        </Text>
-      </View>
-      <Text style={styles.subtitle}>Please select your country</Text>
-
-      <TouchableOpacity
-        style={styles.pickerContainer}
-        onPress={() => setShowPicker(true)}
-      >
-        <View style={styles.pickerContent}>
-          <CountryPicker
-            countryCode={country.cca2}
-            withFlag
-            withFilter
-            withAlphaFilter
-            withCallingCode
-            visible={showPicker}
-            onClose={() => setShowPicker(false)}
-            onSelect={(selectedCountry) => {
-              setCountry(selectedCountry);
-              setShowPicker(false);
-            }}
-          />
-          <Text style={styles.countryText}>{country.name}</Text>
+    <View style={styles.container}>
+      <Image source={Images.loginImg} style={{ alignSelf: "center" }} />
+      <View style={styles.bottomContainer}>
+        <View style={{ display: "flex", flexDirection: "row" }}>
+          <Text style={styles.title}>{"Let's Get" + " "}</Text>
+          <Text style={[styles.title, { color: "rgb(197, 1, 142)" }]}>
+            Started
+          </Text>
         </View>
-        <Icon name="keyboard-arrow-down" size={28} color="rgb(191, 8, 204)" />
-      </TouchableOpacity>
+        <Text style={styles.subtitle}>Please select your country</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Enter Your Email"
-        placeholderTextColor="#aaa"
-        value={email}
-        onChangeText={setEmail}
-      />
+        <TouchableOpacity
+          style={styles.pickerContainer}
+          onPress={() => setShowPicker(true)}
+        >
+          <View style={styles.pickerContent}>
+            <CountryPicker
+              countryCode={country.cca2}
+              withFlag
+              withFilter
+              withAlphaFilter
+              withCallingCode
+              visible={showPicker}
+              onClose={() => setShowPicker(false)}
+              onSelect={(selectedCountry) => {
+                setCountry(selectedCountry);
+                setShowPicker(false);
+              }}
+            />
+            <Text style={styles.countryText}>{country.name}</Text>
+          </View>
+          <Icon name="keyboard-arrow-down" size={28} color="rgb(191, 8, 204)" />
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>CONTINUE</Text>
-      </TouchableOpacity>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter Your Email"
+          placeholderTextColor="#aaa"
+          value={email}
+          onChangeText={setEmail}
+        />
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigator.push("MoreDetails")}
+        >
+          <Text style={styles.buttonText}>CONTINUE</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  bottomContainer: {
+  container: {
     flex: 1,
+    padding: 20,
+    gap: vs(50),
+    paddingTop: vs(70),
+  },
+  bottomContainer: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#fff",
-    padding: 20,
+    padding: 5,
   },
   title: {
     fontSize: 28,
@@ -91,7 +106,7 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: "rgba(0, 0, 0, 0.5)",
     borderRadius: 10,
-    marginBottom: 30,
+    marginBottom: 25,
   },
   pickerContent: {
     flexDirection: "row",

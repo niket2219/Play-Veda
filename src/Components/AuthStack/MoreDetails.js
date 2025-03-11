@@ -7,8 +7,11 @@ import {
   StyleSheet,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+import { useAuth } from "../../AuthContext";
 
 const MoreDetails = () => {
+  const { login } = useAuth();
+
   const [name, setName] = useState("");
   const [childName, setChildName] = useState("");
   const [age, setAge] = useState("");
@@ -72,7 +75,7 @@ const MoreDetails = () => {
         </Picker>
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+      <TouchableOpacity style={styles.button} onPress={login}>
         <Text style={styles.buttonText}>SUBMIT</Text>
       </TouchableOpacity>
 

@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { ms, s } from "react-native-size-matters";
+import { useAuth } from "../../AuthContext";
 
 const { width } = Dimensions.get("window");
 const CARD_WIDTH = width * 0.39;
@@ -31,6 +32,8 @@ const childrenData = [
 ];
 
 const KidsPlayProgress = () => {
+  const { logout } = useAuth();
+
   const renderItem = ({ item }) => (
     <View
       style={[styles.card, { backgroundColor: item.color, width: CARD_WIDTH }]}
@@ -45,7 +48,7 @@ const KidsPlayProgress = () => {
     <View style={styles.container}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>Kid's Play Progress</Text>
-        <TouchableOpacity style={{ marginLeft: s(7) }}>
+        <TouchableOpacity style={{ marginLeft: s(7) }} onPress={logout}>
           <AntDesign name="right" size={ms(22)} color="black" />
         </TouchableOpacity>
       </View>
