@@ -7,27 +7,9 @@ import Card from "./Card";
 
 const Header = ({ data, images }) => {
   const [scrollX, setScrollX] = useState(0);
-  const [headerHeight, setHeaderHeight] = useState(350);
 
-  // Function to dynamically update the header according to the card content
-  const updateHeaderHeight = (index) => {
-    const isComingSoon = data[index]?.isComingSoon;
-    if (!data[index]?.title || !data[index]?.description) {
-      setHeaderHeight(vs(290));
-    } else if (isComingSoon) {
-      setHeaderHeight(vs(340));
-    } else {
-      setHeaderHeight(vs(310));
-    }
-  };
-
-  useEffect(() => {
-    const activeIndex = Math.round(scrollX / width);
-    updateHeaderHeight(activeIndex);
-  }, [scrollX]);
   return (
-    <View style={[styles.headerContainer, { height: headerHeight }]}>
-      {/* profile container with hamburger menu */}
+    <View style={[styles.headerContainer, { height: "auto" }]}>
       <View style={styles.profileContainer}>
         <View style={styles.fixedHeader}>
           <View style={styles.avatarContainer}>
@@ -44,7 +26,6 @@ const Header = ({ data, images }) => {
           <Feather name="menu" size={24} color="white" />
         </View>
       </View>
-      {/* scrollable cards dynamic */}
       <ScrollView
         horizontal
         pagingEnabled
@@ -58,7 +39,6 @@ const Header = ({ data, images }) => {
           <Card item={item} key={item.id} />
         ))}
       </ScrollView>
-      {/* Slider indicator */}
       <View style={styles.progressBar}>
         {data.map((_, index) => {
           const isActive = Math.round(scrollX / width) === index;
@@ -128,16 +108,16 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     flexDirection: "row",
-    justifyContent: "center",
     alignItems: "center",
-    marginVertical: 10,
-    width: "90%",
+    marginTop: 15,
+    marginBottom: 7,
+    width: "100%",
     alignSelf: "center",
   },
   progressSegment: {
-    height: 5,
+    height: 3,
     backgroundColor: "#ffffff",
-    marginHorizontal: 5,
+    marginHorizontal: 2,
     borderRadius: 5,
   },
 });

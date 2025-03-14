@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,17 +6,36 @@ import {
   FlatList,
   TouchableOpacity,
   StyleSheet,
-  Platform,
 } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { ms, s } from "react-native-size-matters";
 import KidsPlayProgress from "./KidsPlayProgress";
-import { useRoute, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 
-const PlayLilaCard = ({ images = [] }) => {
-  const hasImages = images.length > 0;
-  const isKidsPlayProgressCard = false;
+const PlayLilaCard = () => {
+  const [session, setSession] = useState({});
   const navigator = useNavigation();
+
+  const fetchSessions = async () => {
+    try {
+      console.log("Making API call");
+      const response = await axios.get(
+        "https://play-veda-admin-server.onrender.com/api/cards2"
+      );
+      console.log("API call completed");
+      setSession(response.data[0]);
+    } catch (error) {
+      console.log("Error while requesting server: " + error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSessions();
+  }, []);
+
+  const isKidsPlayProgressCard = false;
+  const hasImages = session.images && session.images.length > 0;
 
   return isKidsPlayProgressCard ? (
     <KidsPlayProgress />
@@ -32,22 +51,24 @@ const PlayLilaCard = ({ images = [] }) => {
           <Text style={styles.title}>Upcoming Play::Lila Sessions</Text>
           <Text style={styles.subtitle}>in your society</Text>
         </View>
-        <TouchableOpacity
-          onPress={() => navigator.navigate("PlayLilaSession", {})}
-        >
-          <AntDesign name="rightcircle" size={ms(28)} color="black" />
-        </TouchableOpacity>
+        {session.details_button == "true" && (
+          <TouchableOpacity
+            onPress={() => navigator.navigate("PlayLilaSession", {})}
+          >
+            <AntDesign name="rightcircle" size={ms(28)} color="black" />
+          </TouchableOpacity>
+        )}
       </View>
 
       {hasImages && (
         <View style={styles.imageContainer}>
           <View style={styles.imageWrapper}>
             <FlatList
-              data={images}
+              data={session.images}
               horizontal
               keyExtractor={(item, index) => index.toString()}
               renderItem={({ item }) => (
-                <Image source={item} style={styles.image} />
+                <Image source={{ uri: item }} style={styles.image} />
               )}
               showsHorizontalScrollIndicator={false}
             />

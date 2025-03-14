@@ -2,6 +2,7 @@ import React from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TopScreen from "../../Components/Molecules/TopScreen";
+import MemberShipToast from "../../Components/Atoms/MemberShipToast";
 
 const HomeScreen = () => {
   return (
@@ -10,10 +11,17 @@ const HomeScreen = () => {
         <View style={styles.topContainer}>
           <TopScreen />
         </View>
-        {/* <View style={styles.membershipCard}>
-          <ClubMembershipCard />
-        </View> */}
       </ScrollView>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          position: "absolute",
+          bottom: 70,
+        }}
+      >
+        <MemberShipToast />
+      </View>
     </SafeAreaView>
   );
 };

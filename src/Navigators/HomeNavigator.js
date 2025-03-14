@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "../Screens/MainScreens/HomeScreen";
 import PlayLilaSession from "../Screens/NestedScreens/PlayLilaSession";
 import { Easing } from "react-native-reanimated";
+import MembershipScreen from "../Screens/NestedScreens/MemberShipScreen";
 
 const Stack = createStackNavigator();
 
@@ -40,6 +41,11 @@ const HomeNavigator = () => {
       <Stack.Screen
         name="PlayLilaSession"
         component={PlayLilaSession}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="MemberShip"
+        component={MembershipScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
