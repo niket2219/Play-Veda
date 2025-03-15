@@ -64,9 +64,6 @@ const SessionHeader = ({ sessions, currentActive, onSessionChange }) => {
 };
 
 const SessionCard = ({ sessions, currentActive, onSessionChange }) => {
-  useEffect(() => {
-    console.log(currentActive);
-  }, []);
   return (
     <View style={sessionCardStyles.container}>
       <FlatList
@@ -114,9 +111,14 @@ const SessionCard = ({ sessions, currentActive, onSessionChange }) => {
 
 const ScheduleCard = ({ sessions, currentActive }) => {
   const session = sessions.find((item) => item.id == currentActive);
+  INFO_DATA[0].value = session.ageGroup;
+  INFO_DATA[1].value = session.batchSize;
+  INFO_DATA[2].value = session.duration;
   return (
     <View style={scheduleStyles.card}>
-      <Text style={scheduleStyles.date}>Monday, 3rd Mar</Text>
+      <Text style={scheduleStyles.date}>
+        {session.day}, 3rd {session.month}
+      </Text>
       <Text style={scheduleStyles.time}>
         {session.time}
         {" :: "}

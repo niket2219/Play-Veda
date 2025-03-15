@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { SafeAreaView, ScrollView, View, StyleSheet } from "react-native";
 import Session from "../Atoms/Session";
 import Images from "../../Utils/Images/Image";
@@ -51,6 +51,36 @@ const images = [
 ];
 
 const App = () => {
+  const [allCards, setallCards] = useState([]);
+  const fetchCards = async () => {
+    console.log("plaease wait ..");
+    try {
+      const [response1, response2] = await Promise.all([
+        fetch("https://play-veda-admin-server.onrender.com/api/cards").then(
+          (res) => res.json()
+        ),
+        fetch("https://play-veda-admin-server.onrender.com/api/cards2").then(
+          (res) => res.json()
+        ),
+      ]);
+      const response11 = response1.cards;
+      const combinedResults = [...response11, ...response2];
+      setallCards(combinedResults);
+      console.log(combinedResults);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  useEffect(() => {
+    fetchCards();
+  }, []);
+
+  const mainCards = useMemo(() => {
+    return allCards
+      .filter((item) => item.display === "mainpage")
+      .sort((a, b) => a.order - b.order);
+  }, [allCards]);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView
@@ -58,10 +88,17 @@ const App = () => {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.mainScreen}>
-          <Header data={data} images={images} />
-          <Session images={images} />
-          <Card item={data1[0]} />
-          <KidsPlayProgress />
+          <Header data={allCards} images={images} />
+          {mainCards.map((item) => {
+            switch (item.type) {
+              case "template1":
+                return <Card key={item.id} item={item} />;
+              case "template2":
+                return <Session key={item.id} session={item} />;
+              default:
+                return null;
+            }
+          })}
           <Card3 />
         </View>
       </ScrollView>

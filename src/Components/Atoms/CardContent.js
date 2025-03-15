@@ -28,7 +28,11 @@ const CardContent = ({ item }) => {
         </TouchableOpacity>
         {item?.imgUrl && (
           <View style={styles.headerImgContainer}>
-            <Image source={item.imgUrl} style={styles.image} />
+            <Image
+              source={{ uri: item?.imgUrl }}
+              style={styles.image}
+              resizeMode="contain"
+            />
           </View>
         )}
       </View>
@@ -42,7 +46,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   card: {
-    maxHeight: 230,
+    maxHeight: 235,
     borderRadius: 20,
     padding: 4,
     position: "relative",
@@ -53,7 +57,7 @@ const styles = StyleSheet.create({
   cardContent: {
     padding: 14,
     flexDirection: "column",
-    gap: 6,
+    gap: 7,
     marginLeft: 4,
   },
   getStarted: {
@@ -68,8 +72,8 @@ const styles = StyleSheet.create({
   cardFooter: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: 4,
+    alignItems: "flex-end",
+    marginTop: 6,
   },
   button: {
     backgroundColor: "#007bff",

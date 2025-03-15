@@ -98,7 +98,7 @@ const SessionDetails = ({ sessions, currentActive }) => {
                 <Text style={[styles.activityTitle, { color: item.color }]}>
                   {item.name}
                 </Text>
-                <Text style={styles.activityDesc}>{item.description}</Text>
+                <Text style={styles.activityDesc}>{item.subtitle}</Text>
               </View>
             )}
             nestedScrollEnabled

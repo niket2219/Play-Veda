@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { ScrollView, View, Text, StyleSheet, Dimensions } from "react-native";
 import { s, vs, ms } from "react-native-size-matters";
 const { width } = Dimensions.get("window");
@@ -7,6 +7,12 @@ import Card from "./Card";
 
 const Header = ({ data, images }) => {
   const [scrollX, setScrollX] = useState(0);
+
+  const mainCards = useMemo(() => {
+    return data
+      .filter((item) => item.display === "toppage")
+      .sort((a, b) => a.order - b.order);
+  }, [data]);
 
   return (
     <View style={[styles.headerContainer, { height: "auto" }]}>
@@ -35,12 +41,12 @@ const Header = ({ data, images }) => {
         }}
         scrollEventThrottle={16}
       >
-        {data.map((item, index) => (
+        {mainCards.map((item, index) => (
           <Card item={item} key={item.id} />
         ))}
       </ScrollView>
       <View style={styles.progressBar}>
-        {data.map((_, index) => {
+        {mainCards.map((_, index) => {
           const isActive = Math.round(scrollX / width) === index;
           return (
             <View
@@ -49,8 +55,8 @@ const Header = ({ data, images }) => {
                 styles.progressSegment,
                 {
                   width: isActive
-                    ? width * 0.3
-                    : (width * 0.4) / (data.length - 1),
+                    ? width * 0.45
+                    : (width * 0.35) / (mainCards.length - 1),
                   opacity: isActive ? 1 : 0.5,
                 },
               ]}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -11,31 +11,16 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import { ms, s } from "react-native-size-matters";
 import KidsPlayProgress from "./KidsPlayProgress";
 import { useNavigation } from "@react-navigation/native";
-import axios from "axios";
 
-const PlayLilaCard = () => {
-  const [session, setSession] = useState({});
+const PlayLilaCard = ({ session = {} }) => {
   const navigator = useNavigation();
 
-  const fetchSessions = async () => {
-    try {
-      console.log("Making API call");
-      const response = await axios.get(
-        "https://play-veda-admin-server.onrender.com/api/cards2"
-      );
-      console.log("API call completed");
-      setSession(response.data[0]);
-    } catch (error) {
-      console.log("Error while requesting server: " + error);
-    }
-  };
-
   useEffect(() => {
-    fetchSessions();
+    console.log(session);
   }, []);
 
   const isKidsPlayProgressCard = false;
-  const hasImages = session.images && session.images.length > 0;
+  const hasImages = Array.isArray(session?.images) && session.images.length > 0;
 
   return isKidsPlayProgressCard ? (
     <KidsPlayProgress />
@@ -48,10 +33,10 @@ const PlayLilaCard = () => {
     >
       <View style={styles.header}>
         <View style={styles.headings}>
-          <Text style={styles.title}>Upcoming Play::Lila Sessions</Text>
-          <Text style={styles.subtitle}>in your society</Text>
+          <Text style={styles.title}>{session?.title}</Text>
+          <Text style={styles.subtitle}>{session?.subtitle}</Text>
         </View>
-        {session.details_button == "true" && (
+        {session?.details_button === "true" && (
           <TouchableOpacity
             onPress={() => navigator.navigate("PlayLilaSession", {})}
           >
@@ -60,11 +45,11 @@ const PlayLilaCard = () => {
         )}
       </View>
 
-      {hasImages && (
+      {hasImages ? (
         <View style={styles.imageContainer}>
           <View style={styles.imageWrapper}>
             <FlatList
-              data={session.images}
+              data={session.images || []}
               horizontal
               keyExtractor={(item, index) => index.toString()}
               renderItem={({ item }) => (
@@ -74,7 +59,7 @@ const PlayLilaCard = () => {
             />
           </View>
         </View>
-      )}
+      ) : null}
     </View>
   );
 };
@@ -83,7 +68,7 @@ const styles = StyleSheet.create({
   card: {
     width: "90%",
     backgroundColor: "#fff",
-    padding: 14,
+    padding: 17,
     borderRadius: 20,
     shadowColor: "rgba(0, 0, 255, 0.05)",
     shadowOpacity: 0.1,
@@ -132,6 +117,12 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 10,
     marginRight: 4,
+  },
+  noImageText: {
+    textAlign: "center",
+    color: "gray",
+    fontSize: 14,
+    marginTop: 10,
   },
 });
 
